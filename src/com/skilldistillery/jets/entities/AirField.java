@@ -8,17 +8,19 @@ import java.util.List;
 
 public class AirField {
 
-	private List<Jet> fleet = new ArrayList<>();
+	private List<Jet> fleet;
 
 	/*
 	 * if (p instanceof Employee) { Employee e = (Employee) p; e.getTitle(); }
 	 */
 
 	public AirField() {
+		this.fleet = new ArrayList<>();
 	}
 
 	private void saveJets() {
-		// TODO Auto-generated method stub
+
+		// optional
 
 	}
 
@@ -33,22 +35,28 @@ public class AirField {
 
 		for (String line : jetLines) {
 			String[] jetData = line.split(",");
+
 			String type = jetData[0];
+
 			String model = jetData[1];
 			double speed = Short.parseShort(jetData[2]);
 			int range = Integer.parseInt(jetData[3]);
 			long price = Long.parseLong(jetData[4]);
 
 			Jet jet = null;
+
 			switch (type) {
 			case "FighterJet":
 				jet = new FighterJet(model, speed, range, price);
+				System.out.println("FighterJet"); // debug purposes
 				break;
 			case "CargoPlane":
 				jet = new CargoPlane(model, speed, range, price);
+				System.out.println("CargoPlane");
 				break;
 			case "JetImpl":
 				jet = new JetImpl(model, speed, range, price);
+				System.out.println("JetImpl");
 				break;
 			}
 			if (jet != null) {

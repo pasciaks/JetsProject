@@ -15,6 +15,8 @@ public class JetsApplication {
 	private void launch() {
 
 		airField = new AirField();
+		airField.loadJets();
+		airField.displayFleet();
 
 	}
 

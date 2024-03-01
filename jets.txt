@@ -1,0 +1,16 @@
+JetImpl,Airbus A220,500,1500,1500000
+JetImpl,Airbus A320,500,1500,1800000
+JetImpl,Airbus A330,500,1500,1900000
+JetImpl,Airbus A350 XWB,500,1500,2500000
+JetImpl,Antonov An-148/An-158,500,1500,2600000
+JetImpl,Boeing 737,800,1500,3500000
+JetImpl,Boeing 767,750,1500,4500000
+JetImpl,Boeing 777,950,1500,5500000
+JetImpl,Boeing 787 Dreamliner,500,1500,5600000
+CargoPlane,Comac ARJ21 Xiangfeng,500,1500,1500000
+CargoPlane,Comac C919,500,1500,1500000
+JetImpl,Embraer E-Jet family,500,1500,1500000
+JetImpl,Embraer E-Jet E2 family,500,1500,1500000
+FighterJet,Ilyushin Il-96,700,1500,1500000
+FighterJet,Sukhoi Superjet SSJ100,650,1500,1500000
+FighterJet,Tupolev Tu-204/Tu-214,800,1500,1500000

@@ -9,7 +9,6 @@ public class JetsApplication {
 
 	private AirField airField;
 
-	// NOTE: Last choice will be quit option
 	private String[] menuChoices = { "List fleet", "Fly all jets", "View fastest jet", "View jet with longest range",
 			"Load all Cargo Jets", "Dogfight!", "Add a jet to Fleet", "Remove a jet from Fleet", "Quit" };
 
@@ -24,8 +23,6 @@ public class JetsApplication {
 		Scanner keyboard = new Scanner(System.in);
 
 		airField = new AirField();
-		airField.loadJets();
-		airField.displayFleet();
 
 		interactiveMenu(keyboard);
 
@@ -37,8 +34,8 @@ public class JetsApplication {
 
 		int currentChoice = 0;
 
-		// This implementation is overly complex
-		// But it served as a chance to use my getInputUtility
+		// This implementation is a little complex
+		// However, it serves as a chance to use my getInputUtility
 
 		GetInputUtility giu = new GetInputUtility(); // validates and only returns type in range
 
@@ -47,7 +44,7 @@ public class JetsApplication {
 
 		do {
 
-			currentChoice = giu.getInput(menuChoices, minInt, maxInt, keyboard);
+			currentChoice = giu.getInput(menuChoices, minInt, maxInt, keyboard); // only returns type in range
 
 			switch (currentChoice) {
 			case 1:
@@ -69,7 +66,7 @@ public class JetsApplication {
 				dogFight();
 				break;
 			case 7:
-				addJetToFleet();
+				addJetToFleet(giu, keyboard);
 				break;
 			case 8:
 				removeJetFromFleet();
@@ -114,7 +111,8 @@ public class JetsApplication {
 		System.out.println("Dog Fight");
 	}
 
-	private void addJetToFleet() {
+	private void addJetToFleet(GetInputUtility giu, Scanner keyboard) {
+
 		System.out.println("Add Jet to Fleet");
 
 		// validated user input for
@@ -125,7 +123,22 @@ public class JetsApplication {
 		// range (int)
 		// price (long)
 
+		String[] typeOfJetChoices = { "Cargo Plane", "Fighter Jet", "Jet Impl", "Changed My Mind" };
+
+		int yourTypeOfJet = giu.getInput(typeOfJetChoices, 1, 4, keyboard); // only returns type in range
+
+		if (yourTypeOfJet == 4) {
+			return;
+		}
+
+		String yourModel = giu.getInput("Model:", "", "\uffff".repeat(255), keyboard, 1, 255); // enforce length 1- 255
+		double yourSpeed = giu.getInput("Speed:", (double) 1, Double.MAX_VALUE, keyboard);
+		int yourRange = giu.getInput("Range:", (int) 1, Integer.MAX_VALUE, keyboard);
+		long yourPrice = giu.getInput("Price:", (long) 1, Long.MAX_VALUE, keyboard);
+
 		// call the airfield add jet method
+
+		airField.addJet(typeOfJetChoices[yourTypeOfJet - 1], yourModel, yourSpeed, yourRange, yourPrice);
 	}
 
 	private void removeJetFromFleet() {

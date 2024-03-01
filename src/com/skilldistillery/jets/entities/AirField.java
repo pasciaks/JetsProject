@@ -24,6 +24,10 @@ public class AirField {
 
 	}
 
+	public void listFleet() {
+		displayFleet();
+	}
+
 	public void loadJets() {
 
 		List<String> jetLines = this.readFileIntoListOfStrings("jets.txt");
@@ -43,27 +47,35 @@ public class AirField {
 			int range = Integer.parseInt(jetData[3]);
 			long price = Long.parseLong(jetData[4]);
 
-			Jet jet = null;
+			Jet jet = this.addJet(type, model, speed, range, price);
 
-			switch (type) {
-			case "FighterJet":
-				jet = new FighterJet(model, speed, range, price);
-				System.out.println("FighterJet"); // debug purposes
-				break;
-			case "CargoPlane":
-				jet = new CargoPlane(model, speed, range, price);
-				System.out.println("CargoPlane");
-				break;
-			case "JetImpl":
-				jet = new JetImpl(model, speed, range, price);
-				System.out.println("JetImpl");
-				break;
-			}
 			if (jet != null) {
 				fleet.add(jet);
 			}
 		}
 
+	}
+
+	public Jet addJet(String type, String model, double speed, int range, long price) {
+		Jet jet = null;
+		switch (type) {
+		case "FighterJet":
+			jet = new FighterJet(model, speed, range, price);
+			System.out.println("FighterJet"); // debug purposes
+			break;
+		case "CargoPlane":
+			jet = new CargoPlane(model, speed, range, price);
+			System.out.println("CargoPlane");
+			break;
+		case "JetImpl":
+			jet = new JetImpl(model, speed, range, price);
+			System.out.println("JetImpl");
+			break;
+		default:
+			// Note: Jet is abstract, a default Jet is not possible
+			break;
+		}
+		return jet;
 	}
 
 	public void displayFleet() {

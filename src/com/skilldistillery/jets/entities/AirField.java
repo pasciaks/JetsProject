@@ -18,17 +18,11 @@ public class AirField {
 		this.fleet = new ArrayList<>();
 	}
 
-	private void saveJets() {
-
-		// optional
-
-	}
-
 	public void listFleet() {
 		displayFleet();
 	}
 
-	public void loadJets() {
+	public void loadJetsFromFile() {
 
 		List<String> jetLines = this.readFileIntoListOfStrings("jets.txt");
 
@@ -47,11 +41,14 @@ public class AirField {
 			int range = Integer.parseInt(jetData[3]);
 			long price = Long.parseLong(jetData[4]);
 
-			Jet jet = this.addJet(type, model, speed, range, price);
+			boolean wasAdded = this.addJetToAirField(type, model, speed, range, price);
 
-			if (jet != null) {
-				fleet.add(jet);
+			if (wasAdded) {
+				System.out.println("Jet added: " + model);
+			} else {
+				System.out.println("Jet not added: " + model);
 			}
+
 		}
 
 	}
@@ -76,6 +73,16 @@ public class AirField {
 			break;
 		}
 		return jet;
+	}
+
+	public boolean addJetToAirField(String type, String model, double speed, int range, long price) {
+		Jet newJet = addJet(type, model, speed, range, price);
+		if (newJet != null) {
+			fleet.add(newJet);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public void displayFleet() {

@@ -24,6 +24,8 @@ public class JetsApplication {
 
 		airField = new AirField();
 
+		airField.loadJetsFromFile();
+
 		interactiveMenu(keyboard);
 
 		keyboard.close();
@@ -33,9 +35,6 @@ public class JetsApplication {
 	private void interactiveMenu(Scanner keyboard) {
 
 		int currentChoice = 0;
-
-		// This implementation is a little complex
-		// However, it serves as a chance to use my getInputUtility
 
 		GetInputUtility giu = new GetInputUtility(); // validates and only returns type in range
 
@@ -48,22 +47,22 @@ public class JetsApplication {
 
 			switch (currentChoice) {
 			case 1:
-				listFleet();
+				airField.listFleet();
 				break;
 			case 2:
-				flyAllJets();
+//				airField.flyAllJets(); // in AirField - execute appropriate method for each
 				break;
 			case 3:
-				viewFastestJet();
+//				airField.viewFastestJet();  // in AirField - execute appropriate method for each
 				break;
 			case 4:
-				viewJetWithLongestRange();
+//				airField.viewJetWithLongestRange(); // in AirField - execute appropriate method for each
 				break;
 			case 5:
-				loadAllCargoJets();
+//				airField.loadAllCargoJets(); // in AirField - execute appropriate method for each
 				break;
 			case 6:
-				dogFight();
+//				airField.dogFight(); // in AirField - execute appropriate method for each
 				break;
 			case 7:
 				addJetToFleet(giu, keyboard);
@@ -82,48 +81,19 @@ public class JetsApplication {
 
 	}
 
-	private void listFleet() {
-		System.out.println("List Fleet");
-
-	}
-
-	private void flyAllJets() {
-		System.out.println("Fly All Jets");
-
-	}
-
-	private void viewFastestJet() {
-		System.out.println("View Fastest Jet");
-
-	}
-
-	private void viewJetWithLongestRange() {
-		System.out.println("View Jet with Longest Range");
-
-	}
-
-	private void loadAllCargoJets() {
-		System.out.println("Load All Cargo Jets");
-
-	}
-
-	private void dogFight() {
-		System.out.println("Dog Fight");
+	private void displayProperties(int type, String model, double speed, int range, long price) {
+		System.out.printf("Type:  %s%n", type);
+		System.out.printf("Model: %s%n", model);
+		System.out.printf("Speed: %.2f%n", speed);
+		System.out.printf("Range: %d%n", range);
+		System.out.printf("Price: $%d%n", price);
 	}
 
 	private void addJetToFleet(GetInputUtility giu, Scanner keyboard) {
 
-		System.out.println("Add Jet to Fleet");
+		System.out.println("Add Jet to Fleet\n");
 
-		// validated user input for
-
-		// type
-		// model (String)
-		// speed (double)
-		// range (int)
-		// price (long)
-
-		String[] typeOfJetChoices = { "Cargo Plane", "Fighter Jet", "Jet Impl", "Changed My Mind" };
+		String[] typeOfJetChoices = { "CargoPlane", "FighterJet", "JetImpl", "Back (Changed My Mind)" };
 
 		int yourTypeOfJet = giu.getInput(typeOfJetChoices, 1, 4, keyboard); // only returns type in range
 
@@ -131,14 +101,31 @@ public class JetsApplication {
 			return;
 		}
 
-		String yourModel = giu.getInput("Model:", "", "\uffff".repeat(255), keyboard, 1, 255); // enforce length 1- 255
-		double yourSpeed = giu.getInput("Speed:", (double) 1, Double.MAX_VALUE, keyboard);
-		int yourRange = giu.getInput("Range:", (int) 1, Integer.MAX_VALUE, keyboard);
-		long yourPrice = giu.getInput("Price:", (long) 1, Long.MAX_VALUE, keyboard);
+		String yourModel = giu.getInput("Model: (ABC123): ", "", "\uffff".repeat(255), keyboard, 1, 255); // enforce
+																											// length 1-
+																											// 255
+		double yourSpeed = giu.getInput("Speed: (####.##)", (double) 1, Double.MAX_VALUE, keyboard);
+		int yourRange = giu.getInput("Range: (####)", (int) 1, Integer.MAX_VALUE, keyboard);
+		long yourPrice = giu.getInput("Price: (####)", (long) 1, Long.MAX_VALUE, keyboard);
 
-		// call the airfield add jet method
+		displayProperties(yourTypeOfJet, yourModel, yourSpeed, yourRange, yourPrice);
 
-		airField.addJet(typeOfJetChoices[yourTypeOfJet - 1], yourModel, yourSpeed, yourRange, yourPrice);
+		int areYouSure = giu.getInput("Are you sure you want to add this jet to the fleet? (1) Yes (2) No ? ", 1, 2,
+				keyboard);
+
+		if (areYouSure == 2) {
+			return;
+		} else {
+			System.out.println("Adding jet to fleet...");
+			boolean wasSuccessfullyAdded = airField.addJetToAirField(typeOfJetChoices[yourTypeOfJet - 1], yourModel,
+					yourSpeed, yourRange, yourPrice);
+			if (wasSuccessfullyAdded) {
+				System.out.println("Jet added to fleet!");
+			} else {
+				System.out.println("Jet not added to fleet.");
+			}
+		}
+
 	}
 
 	private void removeJetFromFleet() {
@@ -149,8 +136,6 @@ public class JetsApplication {
 
 	private void quit() {
 		System.out.println("Good Bye!");
-
-		// optional ask if you want to save changed jets collection
 	}
 
 }

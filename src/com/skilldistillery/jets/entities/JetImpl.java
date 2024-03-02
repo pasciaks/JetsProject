@@ -13,4 +13,19 @@ public class JetImpl extends Jet {
 
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Jet Impl - Jet [model=");
+		builder.append(this.getModel());
+		builder.append(", speed=");
+		builder.append(this.getSpeed());
+		builder.append(", range=");
+		builder.append(this.getRange());
+		builder.append(", price=");
+		builder.append(this.getPrice());
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

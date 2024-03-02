@@ -8,21 +8,19 @@ public class CargoPlane extends Jet implements CargoCarrier {
 
 	@Override
 	public void loadCargo() {
-		System.out.println(this.getModel() + " is a Cargo Plane loading it's cargo.");
-		System.out.println();
+		System.out.println("Loading " + this.getModel());
 	}
 
 	@Override
 	public void fly() {
 		System.out.println(this.getModel() + " is a Cargo Plane flying at a speed of " + this.getSpeed()
 				+ " mph with a range of " + this.getRange() + " miles and a price of $" + this.getPrice() + ".");
-		System.out.println();
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Cargo Plane - Jet [model=");
+		builder.append("Cargo Plane [model=");
 		builder.append(this.getModel());
 		builder.append(", speed=");
 		builder.append(this.getSpeed());

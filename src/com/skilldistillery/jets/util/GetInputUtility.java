@@ -21,6 +21,7 @@ public class GetInputUtility {
 		do {
 
 			if (prompt instanceof String[]) {
+				System.out.println("\n\nPlease choose from the following options: \n");
 				int menuIndex = 0;
 				for (String choice : (String[]) prompt) {
 					menuIndex++;

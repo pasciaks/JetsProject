@@ -18,51 +18,112 @@ public class AirField {
 		for (Jet jet : fleet) {
 			jet.fly();
 		}
-	}
-
-	public void viewFastestJet() {
-		Jet fastestJet = null;
-		double fastestSpeed = 0;
-		for (Jet jet : fleet) {
-			if (jet.getSpeed() > fastestSpeed) {
-				fastestSpeed = jet.getSpeed();
-				fastestJet = jet;
-			}
+		if (fleet.isEmpty()) {
+			System.out.println("\nNo jets in the fleet.");
+		} else {
+			int count = this.fleet.size();
+			System.out.println("\nTotal jets in the fleet: " + count);
 		}
-		System.out.println("Fastest Jet: " + fastestJet);
-
 	}
 
 	public void loadAllCargoJets() {
+		int count = 0;
 		for (Jet jet : fleet) {
 			if (jet instanceof CargoCarrier) {
 				((CargoCarrier) jet).loadCargo();
+				count++;
 			}
+		}
+		if (count == 0) {
+			System.out.println("\nNo cargo jets in the fleet.");
+		} else {
+			System.out.println("\nTotal cargo jets in the fleet: " + count);
 		}
 	}
 
 	public void dogFight() {
+		int count = 0;
 		for (Jet jet : fleet) {
 			if (jet instanceof CombatReady) {
 				((CombatReady) jet).fight();
+				count++;
 			}
 		}
+		if (count == 0) {
+			System.out.println("\nNo combat ready jets in the fleet.");
+		} else {
+			System.out.println("\nTotal combat ready jets in the fleet: " + count);
+		}
+	}
+
+	public void viewFastestJet() {
+
+		double fastestSpeed = 0; // speed should be always positive and non-zero
+
+		for (Jet jet : fleet) {
+			if (jet.getSpeed() > fastestSpeed) {
+				fastestSpeed = jet.getSpeed();
+			}
+		}
+
+		System.out.println("Jet(s) with fastest speed: " + fastestSpeed + " mph \n");
+
+		// Note: It's possible there is more than 1 jet with the same fastest speed
+		for (Jet jet : fleet) {
+			if (jet.getSpeed() >= fastestSpeed) {
+				System.out.println(jet);
+			}
+		}
+
 	}
 
 	public void viewJetWithLongestRange() {
-		Jet longestRangeJet = null;
-		int longestRange = 0;
+
+		int longestRange = 0; // range should be always positive and non-zero
+
 		for (Jet jet : fleet) {
 			if (jet.getRange() > longestRange) {
 				longestRange = jet.getRange();
-				longestRangeJet = jet;
 			}
 		}
-		System.out.println("Jet with Longest Range: " + longestRangeJet);
+
+		System.out.println("Jet(s) with Longest Range: " + longestRange + " miles \n");
+
+		for (Jet jet : fleet) {
+			if (jet.getRange() >= longestRange) {
+				System.out.println(jet);
+			}
+		}
+
 	}
 
 	public void listFleet() {
-		displayFleet();
+		int count = 0;
+		for (Jet jet : fleet) {
+			System.out.println(jet);
+			count++;
+		}
+		if (count == 0) {
+			System.out.println("\nNo jets in the fleet.");
+		} else {
+			System.out.println("\nTotal jets in the fleet: " + count);
+		}
+	}
+
+	public List<String> getFleetList() {
+		List<String> fleetList = new ArrayList<>();
+		for (Jet jet : fleet) {
+			fleetList.add(jet.toString());
+		}
+		return fleetList;
+	}
+
+	public boolean removeJetFromFleet(int index) {
+		if (index >= 0 && index < fleet.size()) {
+			fleet.remove(index);
+			return true;
+		}
+		return false;
 	}
 
 	public void loadJetsFromFile() {
@@ -87,9 +148,9 @@ public class AirField {
 			boolean wasAdded = this.addJetToAirField(type, model, speed, range, price);
 
 			if (wasAdded) {
-				System.out.println("Jet added: " + model);
+				// System.out.println("Jet added: " + model);
 			} else {
-				System.out.println("Jet not added: " + model);
+				// System.out.println("Jet not added: " + model);
 			}
 
 		}
@@ -101,15 +162,15 @@ public class AirField {
 		switch (type) {
 		case "FighterJet":
 			jet = new FighterJet(model, speed, range, price);
-			System.out.println("FighterJet"); // debug purposes
+			// System.out.println("FighterJet"); // debug purposes
 			break;
 		case "CargoPlane":
 			jet = new CargoPlane(model, speed, range, price);
-			System.out.println("CargoPlane");
+			// System.out.println("CargoPlane");
 			break;
-		case "JetImpl":
-			jet = new JetImpl(model, speed, range, price);
-			System.out.println("JetImpl");
+		case "PassengerJet":
+			jet = new PassengerJet(model, speed, range, price);
+			// System.out.println("PassengerJet");
 			break;
 		default:
 			// Note: Jet is abstract, a default Jet is not possible
@@ -125,12 +186,6 @@ public class AirField {
 			return true;
 		} else {
 			return false;
-		}
-	}
-
-	public void displayFleet() {
-		for (Jet jet : fleet) {
-			System.out.println(jet);
 		}
 	}
 

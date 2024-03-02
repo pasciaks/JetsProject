@@ -1,4 +1,4 @@
-CargoPlane,Boeing 747-8F,570.0,4390,379000000
+CargoPlane,Boeing 747-8F,530.0,4970,379000000
 CargoPlane,Airbus A330-200F,541.0,4000,241700000
 PassengerJet,Boeing 777F,565.0,4970,349200000
 FighterJet,Lockheed Martin F-22 Raptor,1500.0,1840,150000000

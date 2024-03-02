@@ -1,5 +1,6 @@
 package com.skilldistillery.jets.entities;
 
+import java.text.DecimalFormat;
 import java.util.Objects;
 
 public abstract class Jet {
@@ -17,40 +18,6 @@ public abstract class Jet {
 	}
 
 	public abstract void fly();
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(model, price, range, speed);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Jet other = (Jet) obj;
-		return Objects.equals(model, other.model) && price == other.price && range == other.range
-				&& Double.doubleToLongBits(speed) == Double.doubleToLongBits(other.speed);
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("              Model:   " + this.getModel() + "\n");
-		builder.append("        Speed (MPH):   " + this.getSpeed() + "\n");
-		builder.append("      Range (MILES):   " + this.getRange() + "\n");
-		builder.append("              Price: $ " + this.getPrice() + "\n");
-		// builder.append(" Mac Speed (Mach): ");
-		// builder.append(this.getMacSpeedInMach());
-		// builder.append("\n");
-		// builder.append("Flight Time (Hours): ");
-		// builder.append(this.getFlightTimeInHours());
-		// builder.append("\n");
-		return builder.toString();
-	}
 
 	public String getModel() {
 		return model;
@@ -84,14 +51,54 @@ public abstract class Jet {
 		this.price = price;
 	}
 
+	// Consider farming out this rounding to a utility class
 	public double getMacSpeedInMach() {
 		// = Speed of Sound (at given altitude) MPH / Speed (MPH)
-		return this.getSpeed() / 761.2;
+		DecimalFormat df = new DecimalFormat("#.####");
+		// Apply formatting to the number
+		String roundedNumber = df.format((this.getSpeed() / 761.2));
+		// Convert the formatted string back to a double
+		double roundedDouble = Double.parseDouble(roundedNumber);
+		return roundedDouble;
 	}
 
+	// Consider farming out this rounding to a utility class
 	public double getFlightTimeInHours() {
 		// = Range (Miles) / Speed (MPH)
-		return this.getRange() / this.getSpeed();
+		DecimalFormat df = new DecimalFormat("#.##");
+		// Apply formatting to the number
+		String roundedNumber = df.format((this.getRange() / this.getSpeed()));
+		// Convert the formatted string back to a double
+		double roundedDouble = Double.parseDouble(roundedNumber);
+		return roundedDouble;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(model, price, range, speed);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Jet other = (Jet) obj;
+		return Objects.equals(model, other.model) && price == other.price && range == other.range
+				&& Double.doubleToLongBits(speed) == Double.doubleToLongBits(other.speed);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("              Model:   " + this.getModel() + "\n");
+		builder.append("        Speed (MPH):   " + this.getSpeed() + "\n");
+		builder.append("      Range (MILES):   " + this.getRange() + "\n");
+		builder.append("              Price: $ " + this.getPrice() + "\n");
+		return builder.toString();
 	}
 
 }

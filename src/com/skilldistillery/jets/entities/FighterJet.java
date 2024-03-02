@@ -13,9 +13,10 @@ public class FighterJet extends Jet implements CombatReady {
 
 	@Override
 	public void fly() {
-		System.out.println(this.getModel() + " is a Fighter Jet flying at a speed of " + this.getSpeed()
-				+ " mph with a range of " + this.getRange() + " miles.");
-		System.out.println("   Price: " + this.getPrice() + "\tFlight Time: " + this.getFlightTimeInHours());
+		System.out.print("Flying Fighter 🛩 ");
+		System.out.println(this.getModel() + " at a speed of " + this.getSpeed() + " mph (" + this.getMacSpeedInMach()
+				+ " Mach Speed) with a range of " + this.getRange() + " miles.");
+		System.out.println("   Price: $" + this.getPrice() + "\tFlight Time: " + this.getFlightTimeInHours());
 
 	}
 

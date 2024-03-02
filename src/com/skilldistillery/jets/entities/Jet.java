@@ -9,12 +9,6 @@ public abstract class Jet {
 	private int range;
 	private long price;
 
-	// (( technically, should the Jet UML be using # for the protected data that
-	// would be inherited by the CargoPlane ?? ))
-
-	// use private, but perhaps created protected getters and setters for the
-	// subclasses to use
-
 	public Jet(String model, double speed, int range, long price) {
 		this.model = model;
 		this.speed = speed;

@@ -4,13 +4,13 @@ public class JetImpl extends Jet {
 
 	public JetImpl(String model, double speed, int range, long price) {
 		super(model, speed, range, price);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void fly() {
-		// TODO Auto-generated method stub
-
+		System.out.println(this.getModel() + " is a JetImpl flying at a speed of " + this.getSpeed()
+				+ " mph with a range of " + this.getRange() + " miles and a price of $" + this.getPrice() + ".");
+		System.out.println();
 	}
 
 	@Override

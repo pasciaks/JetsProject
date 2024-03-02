@@ -4,7 +4,6 @@ public class CargoPlane extends Jet implements CargoCarrier {
 
 	public CargoPlane(String model, double speed, int range, long price) {
 		super(model, speed, range, price);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -15,7 +14,6 @@ public class CargoPlane extends Jet implements CargoCarrier {
 
 	@Override
 	public void fly() {
-
 		System.out.println(this.getModel() + " is a Cargo Plane flying at a speed of " + this.getSpeed()
 				+ " mph with a range of " + this.getRange() + " miles and a price of $" + this.getPrice() + ".");
 		System.out.println();

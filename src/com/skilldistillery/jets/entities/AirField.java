@@ -10,12 +10,55 @@ public class AirField {
 
 	private List<Jet> fleet;
 
-	/*
-	 * if (p instanceof Employee) { Employee e = (Employee) p; e.getTitle(); }
-	 */
-
 	public AirField() {
 		this.fleet = new ArrayList<>();
+	}
+
+	public void flyAllJets() {
+		for (Jet jet : fleet) {
+			jet.fly();
+		}
+	}
+
+	public void viewFastestJet() {
+		Jet fastestJet = null;
+		double fastestSpeed = 0;
+		for (Jet jet : fleet) {
+			if (jet.getSpeed() > fastestSpeed) {
+				fastestSpeed = jet.getSpeed();
+				fastestJet = jet;
+			}
+		}
+		System.out.println("Fastest Jet: " + fastestJet);
+
+	}
+
+	public void loadAllCargoJets() {
+		for (Jet jet : fleet) {
+			if (jet instanceof CargoCarrier) {
+				((CargoCarrier) jet).loadCargo();
+			}
+		}
+	}
+
+	public void dogFight() {
+		for (Jet jet : fleet) {
+			if (jet instanceof CombatReady) {
+				((CombatReady) jet).fight();
+			}
+		}
+	}
+
+	public void viewJetWithLongestRange() {
+		Jet longestRangeJet = null;
+		int longestRange = 0;
+		for (Jet jet : fleet) {
+			if (jet.getRange() > longestRange) {
+				longestRange = jet.getRange();
+				longestRangeJet = jet;
+			}
+		}
+		System.out.println("Jet with Longest Range: " + longestRangeJet);
 	}
 
 	public void listFleet() {

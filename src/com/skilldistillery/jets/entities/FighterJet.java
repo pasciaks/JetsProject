@@ -9,13 +9,17 @@ public class FighterJet extends Jet implements CombatReady {
 
 	@Override
 	public void fight() {
-		// TODO Auto-generated method stub
+		System.out.println(this.getModel() + " is a Fighter Jet fighting in a dogfight.");
+		System.out.println();
 
 	}
 
 	@Override
 	public void fly() {
-		// TODO Auto-generated method stub
+
+		System.out.println(this.getModel() + " is a Fighter Jet flying at a speed of " + this.getSpeed()
+				+ " mph with a range of " + this.getRange() + " miles and a price of $" + this.getPrice() + ".");
+		System.out.println();
 
 	}
 

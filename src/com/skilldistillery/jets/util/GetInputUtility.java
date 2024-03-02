@@ -27,7 +27,7 @@ public class GetInputUtility {
 					menuIndex++;
 					System.out.printf("%d. %s \n", menuIndex, choice);
 				}
-				System.out.print("Enter your choice:");
+				System.out.print("Enter your choice: ");
 			} else {
 				String promptResult = prompt.toString();
 				System.out.print(promptResult);

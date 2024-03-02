@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.skilldistillery.jets.entities.AirField;
+import com.skilldistillery.jets.entities.Jet;
 import com.skilldistillery.jets.util.GetInputUtility;
 
 public class JetsApplication {
@@ -19,6 +20,12 @@ public class JetsApplication {
 	private String ANSI_PURPLE = "\u001B[35m";
 	private String ANSI_CYAN = "\u001B[36m";
 
+	private String cargoPlane = "\uD83D\uDEEC"; // 🛬
+	private String fighterJet = "\uD83D\uDEE9"; // 🛩
+	private String passengerPlane = "\uD83D\uDEEB"; // 🛫
+
+	private String allPlanes = cargoPlane + " " + passengerPlane + " " + fighterJet;
+
 	private String[] menuChoices = { "List fleet", "Fly all jets", "View fastest jet", "View jet with longest range",
 			"Load all Cargo Jets", "Dogfight!", "Add a jet to Fleet", "Remove a jet from Fleet", "Quit" };
 
@@ -30,11 +37,21 @@ public class JetsApplication {
 
 	private void launch() {
 
+		System.out.println(ANSI_PURPLE + "Welcome to the Jets Application!" + ANSI_RESET);
+
 		Scanner keyboard = new Scanner(System.in);
 
 		airField = new AirField();
 
-		airField.loadJetsFromFile();
+		System.out.println("Loading jets from file...");
+
+		// NOTE: A cloned list is returned, and NOT an original reference
+		List<Jet> jets = airField.loadJetsFromFile("jets.txt");
+
+		// NOTE: A cloned list is returned, and NOT an original reference
+		jets.get(0).setModel("!! Does not mutate airField list items on purpose !!");
+
+		System.out.println(jets.size() + " Jet(s) loaded!\n");
 
 		interactiveMenu(keyboard);
 
@@ -53,17 +70,17 @@ public class JetsApplication {
 
 		do {
 
-			System.out.println(ANSI_GREEN + "\n\nMain Menu\n" + ANSI_RESET);
+			System.out.println(ANSI_GREEN + "\n M a i n   M e n u " + ANSI_RESET);
 
 			System.out.print(ANSI_YELLOW);
 
 			currentChoice = giu.getInput(menuChoices, minInt, maxInt, keyboard); // only returns type in range
 
-			System.out.println("\n\n" + ANSI_CYAN);
+			System.out.println(ANSI_CYAN);
 
 			switch (currentChoice) {
 			case 1:
-				System.out.println("List Fleet\n" + ANSI_RESET);
+				System.out.println(allPlanes + " List Fleet\n" + ANSI_RESET);
 				airField.listFleet();
 				break;
 			case 2:
@@ -79,11 +96,11 @@ public class JetsApplication {
 				airField.viewJetWithLongestRange(); // in AirField - execute appropriate method for each
 				break;
 			case 5:
-				System.out.println("Load all Cargo Jets\n" + ANSI_RESET);
+				System.out.println(cargoPlane + " Load all Cargo Jets\n" + ANSI_RESET);
 				airField.loadAllCargoJets(); // in AirField - execute appropriate method for each
 				break;
 			case 6:
-				System.out.println("Dogfight all Fighter Jets\n" + ANSI_RESET);
+				System.out.println(fighterJet + " Dogfight all Fighter Jets\n" + ANSI_RESET);
 				airField.dogFight(); // in AirField - execute appropriate method for each
 				break;
 			case 7:
@@ -107,8 +124,9 @@ public class JetsApplication {
 
 	}
 
-	private void displayProperties(int type, String model, double speed, int range, long price) {
-		System.out.printf("Type:  %s%n", type);
+	private void displayProperties(String[] arr, int type, String model, double speed, int range, long price) {
+
+		System.out.printf("Type:  %s%n", arr[type - 1]);
 		System.out.printf("Model: %s%n", model);
 		System.out.printf("Speed: %.2f%n", speed);
 		System.out.printf("Range: %d%n", range);
@@ -127,16 +145,22 @@ public class JetsApplication {
 			return;
 		}
 
+		System.out.println(ANSI_RED + "\nAdding a new: " + typeOfJetChoices[yourTypeOfJet - 1] + ANSI_RESET);
+
 		System.out.println(ANSI_GREEN + "\n\nPlease Enter the Following Information\n" + ANSI_RESET);
 
-		String yourModel = giu.getInput("Model: (ABCd123): ", "", "\uffff".repeat(255), keyboard, 1, 255);
-		double yourSpeed = giu.getInput("Speed: (####.##): ", (double) 1, Double.MAX_VALUE, keyboard);
-		int yourRange = giu.getInput("Range: (#######): ", (int) 1, Integer.MAX_VALUE, keyboard);
-		long yourPrice = giu.getInput("Price: (#######): ", (long) 1, Long.MAX_VALUE, keyboard);
+		String yourModel = giu.getInput("Model (50 Character max allowed): (ABCd123)  : ", "", "\uffff".repeat(50),
+				keyboard, 1, 50);
+		double yourSpeed = giu.getInput("Speed as Numbers only for MPH: (####.##)     : ", (double) 1, Double.MAX_VALUE,
+				keyboard);
+		int yourRange = giu.getInput("Range as Numbers only for Miles: (#######)   : ", (int) 1, Integer.MAX_VALUE,
+				keyboard);
+		long yourPrice = giu.getInput("Price as Numbers only for Dollars (#######)  : ", (long) 1, Long.MAX_VALUE,
+				keyboard);
 
 		System.out.println(ANSI_YELLOW + "\n\nPlease Review the Following Information\n" + ANSI_RESET);
 
-		displayProperties(yourTypeOfJet, yourModel, yourSpeed, yourRange, yourPrice);
+		displayProperties(typeOfJetChoices, yourTypeOfJet, yourModel, yourSpeed, yourRange, yourPrice);
 
 		System.out.println(ANSI_GREEN + "\n\nPlease Make your Choice Carefully\n" + ANSI_RESET);
 
@@ -144,9 +168,11 @@ public class JetsApplication {
 
 		if (areYouSure == 1) {
 			System.out.println("\n\nAdding jet to fleet...");
-			boolean wasSuccessfullyAdded = airField.addJetToAirField(typeOfJetChoices[yourTypeOfJet - 1], yourModel,
-					yourSpeed, yourRange, yourPrice);
-			if (wasSuccessfullyAdded) {
+
+			Jet addedJet = airField.addJetToAirField(typeOfJetChoices[yourTypeOfJet - 1], yourModel, yourSpeed,
+					yourRange, yourPrice);
+
+			if (addedJet != null) {
 				System.out.println("\n\nJet added to fleet!");
 			} else {
 				System.out.println("\n\nJet not added to fleet.");
@@ -157,9 +183,15 @@ public class JetsApplication {
 
 	private void removeJetFromFleet(GetInputUtility giu, Scanner keyboard) {
 
+		List<String> listOfJets = airField.getFleetStringList();
+
+		if (listOfJets.isEmpty()) {
+			System.out.println(ANSI_RED + "\n\nNo jets in fleet to remove." + ANSI_RESET);
+			return;
+		}
+
 		System.out.println(ANSI_GREEN + "\n\nPlease Make your Choice Carefully\n" + ANSI_RESET);
 
-		List<String> listOfJets = airField.getFleetList();
 		String[] jetsMenuChoices = listOfJets.toArray(new String[listOfJets.size() + 1]);
 		jetsMenuChoices[listOfJets.size()] = "Back (Changed My Mind)";
 

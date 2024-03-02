@@ -1,0 +1,9 @@
+CargoPlane,Boeing 747-8F,570.0,4390,379000000
+CargoPlane,Airbus A330-200F,541.0,4000,241700000
+CargoPlane,Lockheed Martin C-5M Super Galaxy,518.0,7000,100000000
+PassengerJet,Boeing 777F,565.0,4970,349200000
+PassengerJet,Airbus A330-300P2F,540.0,3200,259900000
+PassengerJet,Antonov An-124 Ruslan,500.0,8700,70000000
+FighterJet,Lockheed Martin F-22 Raptor,1500.0,1840,150000000
+FighterJet,Boeing F/A-18E/F Super Hornet,1190.0,1275,70500000
+FighterJet,Dassault Rafale,1912.0,2300,105000000

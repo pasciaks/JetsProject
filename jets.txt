@@ -1,8 +1,5 @@
-PassengerJet,Boeing 787 Dreamliner,500,1200,5600000
-CargoPlane,Comac ARJ21 Xiangfeng,500,1300,1500000
-CargoPlane,Comac C919,500,1500,1500000
-PassengerJet,Embraer E-Jet family,800,1500,1500000
-PassengerJet,Embraer E-Jet E2 family,500,1500,1500000
-FighterJet,Ilyushin Il-96,700,1500,1500000
-FighterJet,Sukhoi Superjet SSJ100,650,1500,1500000
-FighterJet,Tupolev Tu-204/Tu-214,800,1500,1500000
+CargoPlane,Boeing 747-8F,570.0,4390,379000000
+CargoPlane,Airbus A330-200F,541.0,4000,241700000
+PassengerJet,Boeing 777F,565.0,4970,349200000
+FighterJet,Lockheed Martin F-22 Raptor,1500.0,1840,150000000
+FighterJet,Boeing F/A-18E/F Super Hornet,1190.0,1275,70500000

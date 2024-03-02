@@ -4,7 +4,6 @@ public class FighterJet extends Jet implements CombatReady {
 
 	public FighterJet(String model, double speed, int range, long price) {
 		super(model, speed, range, price);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -15,21 +14,16 @@ public class FighterJet extends Jet implements CombatReady {
 	@Override
 	public void fly() {
 		System.out.println(this.getModel() + " is a Fighter Jet flying at a speed of " + this.getSpeed()
-				+ " mph with a range of " + this.getRange() + " miles and a price of $" + this.getPrice() + ".");
+				+ " mph with a range of " + this.getRange() + " miles.");
+		System.out.println("   Price: " + this.getPrice() + "\tFlight Time: " + this.getFlightTimeInHours());
+
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Fighter Jet [model=");
-		builder.append(this.getModel());
-		builder.append(", speed=");
-		builder.append(this.getSpeed());
-		builder.append(", range=");
-		builder.append(this.getRange());
-		builder.append(", price=");
-		builder.append(this.getPrice());
-		builder.append("]");
+		builder.append("Fighter Jet\n");
+		builder.append(super.toString());
 		return builder.toString();
 	}
 

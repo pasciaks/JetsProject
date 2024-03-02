@@ -39,15 +39,16 @@ public abstract class Jet {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Jet [model=");
-		builder.append(model);
-		builder.append(", speed=");
-		builder.append(speed);
-		builder.append(", range=");
-		builder.append(range);
-		builder.append(", price=");
-		builder.append(price);
-		builder.append("]");
+		builder.append("              Model:   " + this.getModel() + "\n");
+		builder.append("        Speed (MPH):   " + this.getSpeed() + "\n");
+		builder.append("      Range (MILES):   " + this.getRange() + "\n");
+		builder.append("              Price: $ " + this.getPrice() + "\n");
+		// builder.append(" Mac Speed (Mach): ");
+		// builder.append(this.getMacSpeedInMach());
+		// builder.append("\n");
+		// builder.append("Flight Time (Hours): ");
+		// builder.append(this.getFlightTimeInHours());
+		// builder.append("\n");
 		return builder.toString();
 	}
 
@@ -81,6 +82,16 @@ public abstract class Jet {
 
 	public void setPrice(long price) {
 		this.price = price;
+	}
+
+	public double getMacSpeedInMach() {
+		// = Speed of Sound (at given altitude) MPH / Speed (MPH)
+		return this.getSpeed() / 761.2;
+	}
+
+	public double getFlightTimeInHours() {
+		// = Range (Miles) / Speed (MPH)
+		return this.getRange() / this.getSpeed();
 	}
 
 }

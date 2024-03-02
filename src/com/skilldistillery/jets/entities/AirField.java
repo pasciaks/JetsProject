@@ -6,7 +6,25 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.skilldistillery.jets.util.SafeParse;
+
 public class AirField {
+
+	// NOTE: List is the suitable type because an airfield can have multiple jets
+	// of the same kind, there are no unique identifiers for each jet
+	// and the order of the jets is important.
+
+	/*
+	 * In Java, the ArrayList class guarantees the order of elements. When you add
+	 * elements to an ArrayList, they are stored in the order in which they were
+	 * inserted. Additionally, when you iterate over an ArrayList, the elements are
+	 * returned in the same order as they were added.
+	 * 
+	 * This order preservation is one of the key characteristics of ArrayList and is
+	 * defined in the Java documentation. Therefore, you can rely on the order of
+	 * elements in an ArrayList to remain consistent unless you explicitly modify it
+	 * by adding, removing, or reordering elements.
+	 */
 
 	private List<Jet> fleet;
 
@@ -15,15 +33,18 @@ public class AirField {
 	}
 
 	public void flyAllJets() {
+
+		if (fleet.isEmpty()) {
+			System.out.println("\nNo jets in the fleet.");
+			return;
+		}
+
 		for (Jet jet : fleet) {
 			jet.fly();
 		}
-		if (fleet.isEmpty()) {
-			System.out.println("\nNo jets in the fleet.");
-		} else {
-			int count = this.fleet.size();
-			System.out.println("\nTotal jets in the fleet: " + count);
-		}
+
+		System.out.println("Total jets in the fleet: " + this.fleet.size());
+
 	}
 
 	public void loadAllCargoJets() {
@@ -56,9 +77,17 @@ public class AirField {
 		}
 	}
 
-	public void viewFastestJet() {
+	// Returns List<Jet> using cloned version for external use.
+	public List<Jet> viewFastestJet() {
 
-		double fastestSpeed = 0; // speed should be always positive and non-zero
+		List<Jet> results = new ArrayList<>();
+
+		if (fleet.isEmpty()) {
+			System.out.println("\nNo jets in the fleet.");
+			return results;
+		}
+
+		double fastestSpeed = 0; // any or all will be faster than 0 mph
 
 		for (Jet jet : fleet) {
 			if (jet.getSpeed() > fastestSpeed) {
@@ -72,14 +101,25 @@ public class AirField {
 		for (Jet jet : fleet) {
 			if (jet.getSpeed() >= fastestSpeed) {
 				System.out.println(jet);
+				results.add(cloneJet(jet));
 			}
 		}
 
+		return results;
+
 	}
 
-	public void viewJetWithLongestRange() {
+	// Returns List<Jet> using cloned version for external use.
+	public List<Jet> viewJetWithLongestRange() {
 
-		int longestRange = 0; // range should be always positive and non-zero
+		List<Jet> results = new ArrayList<>();
+
+		if (fleet.isEmpty()) {
+			System.out.println("\nNo jets in the fleet.");
+			return results;
+		}
+
+		int longestRange = 0; // any or all will be longer than 0 miles
 
 		for (Jet jet : fleet) {
 			if (jet.getRange() > longestRange) {
@@ -92,25 +132,37 @@ public class AirField {
 		for (Jet jet : fleet) {
 			if (jet.getRange() >= longestRange) {
 				System.out.println(jet);
+				results.add(cloneJet(jet));
 			}
 		}
 
+		return results;
+
 	}
 
-	public void listFleet() {
+	// Returns List<Jet> using cloned version for external use.
+	public List<Jet> listFleet() {
+
+		List<Jet> results = new ArrayList<>();
+
+		if (fleet.isEmpty()) {
+			System.out.println("\nNo jets in the fleet.");
+			return results;
+		}
+
 		int count = 0;
 		for (Jet jet : fleet) {
 			System.out.println(jet);
+			results.add(cloneJet(jet));
 			count++;
 		}
-		if (count == 0) {
-			System.out.println("\nNo jets in the fleet.");
-		} else {
-			System.out.println("\nTotal jets in the fleet: " + count);
-		}
+
+		System.out.println("\nTotal jets in the fleet: " + count);
+
+		return results;
 	}
 
-	public List<String> getFleetList() {
+	public List<String> getFleetStringList() {
 		List<String> fleetList = new ArrayList<>();
 		for (Jet jet : fleet) {
 			fleetList.add(jet.toString());
@@ -126,38 +178,74 @@ public class AirField {
 		return false;
 	}
 
-	public void loadJetsFromFile() {
+	// Returns List<Jet> using cloned version for external use.
+	public List<Jet> loadJetsFromFile(String fileName) {
 
-		List<String> jetLines = this.readFileIntoListOfStrings("jets.txt");
+		List<Jet> results = new ArrayList<>();
+
+		List<String> jetLines = this.readFileIntoListOfStrings(fileName);
 
 		if (jetLines == null) {
 			System.err.println("No jets found.");
-			return;
+			return results;
 		}
 
 		for (String line : jetLines) {
+
 			String[] jetData = line.split(",");
+
+			if (jetData.length != 5) {
+				System.err.println("Error: Jet data not in correct format, must have 5 fields.");
+				continue;
+			}
 
 			String type = jetData[0];
 
 			String model = jetData[1];
-			double speed = Short.parseShort(jetData[2]);
-			int range = Integer.parseInt(jetData[3]);
-			long price = Long.parseLong(jetData[4]);
 
-			boolean wasAdded = this.addJetToAirField(type, model, speed, range, price);
+			double speed = SafeParse.parseDouble(jetData[2]).getStatusCode() != 500
+					? SafeParse.parseDouble(jetData[2]).getDoubleValue()
+					: 0.0;
+			int range = SafeParse.parseInt(jetData[3]).getStatusCode() != 500
+					? SafeParse.parseInt(jetData[3]).getIntValue()
+					: 0;
+			long price = SafeParse.parseLong(jetData[4]).getStatusCode() != 500
+					? SafeParse.parseLong(jetData[4]).getLongValue()
+					: 0;
 
-			if (wasAdded) {
-				// System.out.println("Jet added: " + model);
-			} else {
-				// System.out.println("Jet not added: " + model);
+			// NOTE: Adds to fleet, but returns a cloned Jet for this external use
+			Jet addedJet = this.addJetToAirField(type, model, speed, range, price);
+
+			if (addedJet != null) {
+
+				// DONE: Adding a cloned Jet to protect Reference Data
+
+				Jet clonedJet = cloneJet(addedJet);
+
+				results.add(clonedJet); // DONE: Adding a cloned Jet to protect Reference Data
+
+				System.out.println("Jet added to fleet: " + clonedJet.getModel());
 			}
 
 		}
 
+		return results;
+
 	}
 
-	public Jet addJet(String type, String model, double speed, int range, long price) {
+	private Jet cloneJet(Jet jet) {
+		Jet clonedJet = null;
+		if (jet instanceof FighterJet) {
+			clonedJet = new FighterJet(jet.getModel(), jet.getSpeed(), jet.getRange(), jet.getPrice());
+		} else if (jet instanceof CargoPlane) {
+			clonedJet = new CargoPlane(jet.getModel(), jet.getSpeed(), jet.getRange(), jet.getPrice());
+		} else if (jet instanceof PassengerJet) {
+			clonedJet = new PassengerJet(jet.getModel(), jet.getSpeed(), jet.getRange(), jet.getPrice());
+		}
+		return clonedJet;
+	}
+
+	private Jet createJet(String type, String model, double speed, int range, long price) {
 		Jet jet = null;
 		switch (type) {
 		case "FighterJet":
@@ -179,13 +267,13 @@ public class AirField {
 		return jet;
 	}
 
-	public boolean addJetToAirField(String type, String model, double speed, int range, long price) {
-		Jet newJet = addJet(type, model, speed, range, price);
+	public Jet addJetToAirField(String type, String model, double speed, int range, long price) {
+		Jet newJet = createJet(type, model, speed, range, price);
 		if (newJet != null) {
 			fleet.add(newJet);
-			return true;
+			return cloneJet(newJet);
 		} else {
-			return false;
+			return cloneJet(newJet);
 		}
 	}
 

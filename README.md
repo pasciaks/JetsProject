@@ -33,6 +33,11 @@
 
 - Paying special attention to the return of objects in public methods is an important best practice.
 
+#### tldr;
+
+- While creating the AirField class, I was intent on providing additional functionality around the return of the different methods.  Perhaps this was because I was focusing on separating the Business Logic with the presentation logic.  This led to me implementing more than just System out messages from the variety of methods and considering returning the sub-set collections of data certain methods inherently would yeild.
+- For example, if the AirField should find the fastest Jet's, more than just displaying them in a strict System out fashion, I decided to return the List<Jet> fastestJets which would be a new list of cloned versions from the underlying AirField fleet List.  In doing so, it identified the need to be safe in returning references to the underlying AirField data.  This led me to create a simple cloneJet method that would be helpful.
+
 
 ```JAVA
 

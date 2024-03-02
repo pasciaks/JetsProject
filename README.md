@@ -22,6 +22,8 @@
     - instanceof practical use
     - Tons of OOP practice, overrides, etc
     - OOP reference returning clone importance
+    - Improve commit messages for better history
+    - Commit message should be feature related if possible
     
 #### Object references using List<Jet>
 

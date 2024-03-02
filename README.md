@@ -20,6 +20,7 @@
     - Implementing interfaces
     - Using ArrayList and other Data Structures
     - instanceof practical use
+    - Tons of OOP practice, overrides, etc
 	
 #### How to run this program : This is a .java source code, command line project.  
 

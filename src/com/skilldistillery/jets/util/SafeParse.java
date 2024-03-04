@@ -1,5 +1,7 @@
 package com.skilldistillery.jets.util;
 
+import java.text.DecimalFormat;
+
 public class SafeParse {
 
 	// NOTE: REF: There are no static methods other than method main.
@@ -81,6 +83,20 @@ public class SafeParse {
 		response.setShortValue(result);
 		response.setResult(true);
 		return response;
+	}
+
+	public static String formatAmountInDollars(long amountInCents) {
+		// Convert cents to dollars
+		double amountInDollars = amountInCents / 100.0;
+
+		// Create a DecimalFormat instance to format the dollar amount with commas
+		DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
+
+		// Format the dollar amount as a string
+		String formattedAmount = decimalFormat.format(amountInDollars);
+
+		// Return the formatted dollar amount
+		return formattedAmount;
 	}
 
 }

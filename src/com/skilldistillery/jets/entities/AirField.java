@@ -33,6 +33,9 @@ public class AirField {
 
 	private List<Jet> fleet;
 
+	// NOT Enabled for Homework, Creates HTML views of related reports
+	private boolean isReportGeneratorEnabled = false;
+
 	public AirField() {
 		this.fleet = new ArrayList<>();
 	}
@@ -251,7 +254,7 @@ public class AirField {
 				// DONE: Adding a cloned Jet to protect Reference Data
 				Jet clonedJet = cloneJet(addedJet);
 				results.add(clonedJet); // DONE: Adding a cloned Jet to protect Reference Data
-				System.out.println("Jet added to fleet: " + clonedJet.getModel());
+				// System.out.println("Jet added to fleet: " + clonedJet.getModel());
 			}
 
 		}
@@ -302,6 +305,11 @@ public class AirField {
 	}
 
 	private void webView(String title, List<Jet> reportJets, String fileName) {
+
+		if (!isReportGeneratorEnabled) {
+			// System.out.println("Report Generator is not enabled.");
+			return;
+		}
 
 		List<String> htmlReportTemplate = readFileIntoListOfStrings("template_REPORT.html");
 		List<String> htmlCardTemplate = readFileIntoListOfStrings("template_CARD.html");
@@ -427,6 +435,14 @@ public class AirField {
 		}
 
 		return arrayListOfStrings;
+	}
+
+	public boolean isReportGeneratorEnabled() {
+		return isReportGeneratorEnabled;
+	}
+
+	public void setReportGeneratorEnabled(boolean isReportGeneratorEnabled) {
+		this.isReportGeneratorEnabled = isReportGeneratorEnabled;
 	}
 
 }

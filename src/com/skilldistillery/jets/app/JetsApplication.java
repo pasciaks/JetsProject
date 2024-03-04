@@ -43,15 +43,7 @@ public class JetsApplication {
 
 		airField = new AirField();
 
-		System.out.println("Loading jets from file...");
-
-		// NOTE: A cloned list is returned, and NOT an original reference
-		List<Jet> jets = airField.loadJetsFromFile("jets.txt");
-
-		// NOTE: A cloned list is returned, and NOT an original reference
-		jets.get(0).setModel("!! Does not mutate airField list items on purpose !!");
-
-		System.out.println(jets.size() + " Jet(s) loaded!\n");
+		airField.loadJetsFromFile("jets.txt");
 
 		interactiveMenu(keyboard);
 
@@ -70,48 +62,46 @@ public class JetsApplication {
 
 		do {
 
-			System.out.println(ANSI_GREEN + "\n M a i n   M e n u " + ANSI_RESET);
-
-			System.out.print(ANSI_YELLOW);
+			System.out.println(ANSI_GREEN + " M a i n    M e n u " + ANSI_YELLOW);
 
 			currentChoice = giu.getInput(menuChoices, minInt, maxInt, keyboard); // only returns type in range
 
-			System.out.println(ANSI_CYAN);
+			System.out.print(ANSI_CYAN);
 
 			switch (currentChoice) {
 			case 1:
-				System.out.println(allPlanes + " List Fleet\n" + ANSI_RESET);
+				System.out.println(allPlanes + " List Fleet" + ANSI_RESET);
 				airField.listFleet();
 				break;
 			case 2:
-				System.out.println("Fly all Jets\n" + ANSI_RESET);
+				System.out.println("Fly all Jets" + ANSI_RESET);
 				airField.flyAllJets(); // in AirField - execute appropriate method for each
 				break;
 			case 3:
-				System.out.println("View Fastest Jet(s)\n" + ANSI_RESET);
+				System.out.println("View Fastest Jet(s)" + ANSI_RESET);
 				airField.viewFastestJet(); // in AirField - execute appropriate method for each
 				break;
 			case 4:
-				System.out.println("View Jet(s) with Longest Range\n" + ANSI_RESET);
+				System.out.println("View Jet(s) with Longest Range" + ANSI_RESET);
 				airField.viewJetWithLongestRange(); // in AirField - execute appropriate method for each
 				break;
 			case 5:
-				System.out.println(cargoPlane + " Load all Cargo Jets\n" + ANSI_RESET);
+				System.out.println(cargoPlane + " Load all Cargo Jets" + ANSI_RESET);
 				airField.loadAllCargoJets(); // in AirField - execute appropriate method for each
 				break;
 			case 6:
-				System.out.println(fighterJet + " Dogfight all Fighter Jets\n" + ANSI_RESET);
+				System.out.println(fighterJet + " Dogfight all Fighter Jets" + ANSI_RESET);
 				airField.dogFight(); // in AirField - execute appropriate method for each
 				break;
 			case 7:
 				addJetToFleet(giu, keyboard);
 				break;
 			case 8:
-				System.out.println("Remove Jet from Fleet\n" + ANSI_RESET);
+				System.out.println("Remove Jet from Fleet" + ANSI_RESET);
 				removeJetFromFleet(giu, keyboard);
 				break;
 			case 9:
-				System.out.println("Quit\n" + ANSI_RESET);
+				System.out.println("Quit" + ANSI_RESET);
 				quit();
 				return;
 			default:
@@ -134,19 +124,15 @@ public class JetsApplication {
 	}
 
 	private void addJetToFleet(GetInputUtility giu, Scanner keyboard) {
-
-		System.out.println(ANSI_CYAN + "\n\nAdd Jet to Fleet\n" + ANSI_PURPLE);
-
 		String[] typeOfJetChoices = { "CargoPlane", "FighterJet", "PassengerJet", "Back (Changed My Mind)" };
 
+		System.out.println(ANSI_CYAN + "\n\nAdd Jet to Fleet\n" + ANSI_PURPLE);
 		int yourTypeOfJet = giu.getInput(typeOfJetChoices, 1, 4, keyboard); // only returns type in range
-
 		if (yourTypeOfJet == 4) {
 			return;
 		}
 
 		System.out.println(ANSI_RED + "\nAdding a new: " + typeOfJetChoices[yourTypeOfJet - 1] + ANSI_RESET);
-
 		System.out.println(ANSI_GREEN + "\n\nPlease Enter the Following Information\n" + ANSI_RESET);
 
 		String yourModel = giu.getInput("Model (50 Character max allowed): (ABCd123)  : ", "", "\uffff".repeat(50),
@@ -163,15 +149,12 @@ public class JetsApplication {
 		displayProperties(typeOfJetChoices, yourTypeOfJet, yourModel, yourSpeed, yourRange, yourPrice);
 
 		System.out.println(ANSI_GREEN + "\n\nPlease Make your Choice Carefully\n" + ANSI_RESET);
-
 		int areYouSure = giu.getInput("Are you sure you want to add this jet ? (1) Yes (2) No ? ", 1, 2, keyboard);
 
 		if (areYouSure == 1) {
 			System.out.println("\n\nAdding jet to fleet...");
-
 			Jet addedJet = airField.addJetToAirField(typeOfJetChoices[yourTypeOfJet - 1], yourModel, yourSpeed,
 					yourRange, yourPrice);
-
 			if (addedJet != null) {
 				System.out.println("\n\nJet added to fleet!");
 			} else {
@@ -191,7 +174,6 @@ public class JetsApplication {
 		}
 
 		System.out.println(ANSI_GREEN + "\n\nPlease Make your Choice Carefully\n" + ANSI_RESET);
-
 		String[] jetsMenuChoices = listOfJets.toArray(new String[listOfJets.size() + 1]);
 		jetsMenuChoices[listOfJets.size()] = "Back (Changed My Mind)";
 

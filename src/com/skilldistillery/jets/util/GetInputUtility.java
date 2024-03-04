@@ -5,6 +5,9 @@ import java.util.Scanner;
 
 public class GetInputUtility {
 
+	private String ANSI_GREEN = "\u001B[32m";
+	private String ANSI_RESET = "\u001B[0m";
+
 	public GetInputUtility() {
 		super();
 	}
@@ -21,13 +24,13 @@ public class GetInputUtility {
 		do {
 
 			if (prompt instanceof String[]) {
-				System.out.println("\n\nPlease choose from the following options: \n");
+				// System.out.println("\n\nPlease choose from the following options: \n");
 				int menuIndex = 0;
 				for (String choice : (String[]) prompt) {
 					menuIndex++;
 					System.out.printf("%d. %s \n", menuIndex, choice);
 				}
-				System.out.print("Enter your choice: ");
+				System.out.print(ANSI_GREEN + "Enter your choice: " + ANSI_RESET);
 			} else {
 				String promptResult = prompt.toString();
 				System.out.print(promptResult);

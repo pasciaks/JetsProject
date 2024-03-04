@@ -3,6 +3,8 @@ package com.skilldistillery.jets.entities;
 import java.text.DecimalFormat;
 import java.util.Objects;
 
+import com.skilldistillery.jets.util.SafeParse;
+
 public abstract class Jet {
 
 	private String model;
@@ -94,10 +96,10 @@ public abstract class Jet {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("              Model:   " + this.getModel() + "\n");
-		builder.append("        Speed (MPH):   " + this.getSpeed() + "\n");
-		builder.append("      Range (MILES):   " + this.getRange() + "\n");
-		builder.append("              Price: $ " + this.getPrice() + "\n");
+		builder.append(" Model: " + this.getModel() + "\n");
+		builder.append("\tSpeed (MPH): " + this.getSpeed() + " ");
+		builder.append("\tRange (MILES): " + this.getRange() + " ");
+		builder.append("\tPrice: $ " + SafeParse.formatAmountInDollars(this.getPrice()) + "");
 		return builder.toString();
 	}
 

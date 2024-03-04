@@ -1,5 +1,7 @@
 package com.skilldistillery.jets.entities;
 
+import com.skilldistillery.jets.util.SafeParse;
+
 public class CargoPlane extends Jet implements CargoCarrier {
 
 	public CargoPlane(String model, double speed, int range, long price) {
@@ -8,7 +10,7 @@ public class CargoPlane extends Jet implements CargoCarrier {
 
 	@Override
 	public void loadCargo() {
-		System.out.println("Loading " + this.getModel());
+		System.out.println("Loading " + super.toString());
 	}
 
 	@Override
@@ -16,7 +18,8 @@ public class CargoPlane extends Jet implements CargoCarrier {
 		System.out.print("Flying Cargo 🛬 ");
 		System.out.println(this.getModel() + " at a speed of " + this.getSpeed() + " mph (" + this.getMacSpeedInMach()
 				+ " Mach Speed) with a range of " + this.getRange() + " miles.");
-		System.out.println("   Price: $" + this.getPrice() + "\tFlight Time: " + this.getFlightTimeInHours());
+		System.out.println(" Price: $" + SafeParse.formatAmountInDollars(this.getPrice()) + "\tFlight Time: "
+				+ this.getFlightTimeInHours());
 
 	}
 

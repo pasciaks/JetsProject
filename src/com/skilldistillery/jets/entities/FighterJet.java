@@ -1,5 +1,7 @@
 package com.skilldistillery.jets.entities;
 
+import com.skilldistillery.jets.util.SafeParse;
+
 public class FighterJet extends Jet implements CombatReady {
 
 	public FighterJet(String model, double speed, int range, long price) {
@@ -8,7 +10,7 @@ public class FighterJet extends Jet implements CombatReady {
 
 	@Override
 	public void fight() {
-		System.out.println("Dogfighting " + this.getModel());
+		System.out.println("Dogfighting " + super.toString());
 	}
 
 	@Override
@@ -16,7 +18,8 @@ public class FighterJet extends Jet implements CombatReady {
 		System.out.print("Flying Fighter 🛩 ");
 		System.out.println(this.getModel() + " at a speed of " + this.getSpeed() + " mph (" + this.getMacSpeedInMach()
 				+ " Mach Speed) with a range of " + this.getRange() + " miles.");
-		System.out.println("   Price: $" + this.getPrice() + "\tFlight Time: " + this.getFlightTimeInHours());
+		System.out.println(" Price: $" + SafeParse.formatAmountInDollars(this.getPrice()) + "\tFlight Time: "
+				+ this.getFlightTimeInHours());
 
 	}
 

@@ -59,6 +59,15 @@ You can view additional branch README file and code at this link: [Web View Exam
 		List<Jet> jets = airField.loadJetsFromFile("jets.txt");
 ```
 	
+	
+#### Beyond the call of duty
+
+- A separate branch is created that holds additional modifications such as the ability to generate an HTML view of the various filtering of the Jets.
+
+- By simply invoking the List, Fastest, Longest Range, Load Cargo, or Fight methods, an additional .html file is generated with bootstrap styling and a card list rendered view of the appropriate results.
+
+![Example usage](web-view-reports.png)
+	
 #### How to run this program : This is a .java source code, command line project.  
 
 You could open the project in an IDE and execute the main method using the IDE tools.

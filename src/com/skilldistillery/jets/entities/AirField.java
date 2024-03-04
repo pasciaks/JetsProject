@@ -1,9 +1,13 @@
 package com.skilldistillery.jets.entities;
 
+import java.awt.Desktop;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,10 +53,12 @@ public class AirField {
 	}
 
 	public void loadAllCargoJets() {
+		List<Jet> cargoJets = new ArrayList<>();
 		int count = 0;
 		for (Jet jet : fleet) {
 			if (jet instanceof CargoCarrier) {
 				((CargoCarrier) jet).loadCargo();
+				cargoJets.add(jet);
 				count++;
 			}
 		}
@@ -61,13 +67,18 @@ public class AirField {
 		} else {
 			System.out.println("\nTotal cargo jets in the fleet: " + count);
 		}
+
+		webView("Cargo Carrier Jets Report", cargoJets, "jet_cargo_carrier_jets_report.html");
+
 	}
 
 	public void dogFight() {
+		List<Jet> combatJets = new ArrayList<>();
 		int count = 0;
 		for (Jet jet : fleet) {
 			if (jet instanceof CombatReady) {
 				((CombatReady) jet).fight();
+				combatJets.add(jet);
 				count++;
 			}
 		}
@@ -76,6 +87,9 @@ public class AirField {
 		} else {
 			System.out.println("\nTotal combat ready jets in the fleet: " + count);
 		}
+
+		webView("Combat Ready Jets Report", combatJets, "jet_combat_ready_jets_report.html");
+
 	}
 
 	// Returns List<Jet> using cloned version for external use.
@@ -107,6 +121,8 @@ public class AirField {
 				results.add(cloneJet(jet));
 			}
 		}
+
+		webView("Fastest Jet Report", results, "jet_fastest_report.html");
 
 		return results;
 
@@ -141,6 +157,8 @@ public class AirField {
 			}
 		}
 
+		webView("Longest Range Jet Report", results, "jet_longest_range_report.html");
+
 		return results;
 
 	}
@@ -163,6 +181,8 @@ public class AirField {
 		}
 
 		System.out.println("\nTotal jets in the fleet: " + count);
+
+		webView("Jet Fleet Report", results, "jet_fleet_report.html");
 
 		return results;
 	}
@@ -278,6 +298,99 @@ public class AirField {
 			return cloneJet(newJet);
 		} else {
 			return null;
+		}
+	}
+
+	private void webView(String title, List<Jet> reportJets, String fileName) {
+
+		List<String> htmlReportTemplate = readFileIntoListOfStrings("template_REPORT.html");
+		List<String> htmlCardTemplate = readFileIntoListOfStrings("template_CARD.html");
+
+		List<String> cards = new ArrayList<>();
+		List<String> outputedHtml = new ArrayList<>();
+
+		for (Jet jet : reportJets) {
+			for (String line : htmlCardTemplate) {
+				String card = "" + line;
+
+				card = card.replace("{{type}}", jet.getClass().getSimpleName());
+				card = card.replace("{{model}}", jet.getModel());
+				card = card.replace("{{speed}}", Double.toString(jet.getSpeed()));
+				card = card.replace("{{range}}", Integer.toString(jet.getRange()));
+				card = card.replace("{{price}}", Long.toString(jet.getPrice()));
+				card = card.replace("{{getFlightTimeInHours}}", Double.toString(jet.getFlightTimeInHours()));
+				card = card.replace("{{getMacSpeedInMach}}", Double.toString(jet.getMacSpeedInMach()));
+				cards.add(card);
+			}
+		}
+
+		StringBuilder sb = new StringBuilder();
+
+		for (String s : cards) {
+			sb.append(s);
+		}
+
+		String cardLines = sb.toString();
+
+		for (String line : htmlReportTemplate) {
+			String reportLine = "" + line;
+			reportLine = reportLine.replace("{{title}}", title);
+			reportLine = reportLine.replace("{{cards}}", cardLines);
+			outputedHtml.add(reportLine);
+		}
+
+		writeWebView(fileName, outputedHtml);
+
+		showWebView(fileName);
+
+	}
+
+	private void showWebView(String fileName) {
+		// Get the Desktop instance
+		Desktop desktop = Desktop.getDesktop();
+
+		// Create a File object for the specified file path
+		File file = new File(fileName);
+
+		try {
+			// Check if the file exists
+			if (!file.exists()) {
+				System.out.println("File does not exist");
+				return;
+			}
+
+			// Open the file in the default web browser
+			desktop.browse(file.toURI());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void writeWebView(String fileName, List<String> htmlLines) {
+
+		PrintStream ps = null;
+		try {
+			fileName = fileName.replace("/", System.getProperty("file.separator"));
+
+			FileOutputStream fs = new FileOutputStream(fileName);
+
+			ps = new PrintStream(fs);
+			for (String line : htmlLines) {
+				ps.println(line);
+			}
+			ps.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (ps != null) {
+				try {
+					ps.close(); // a close method can also throw an exception
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 

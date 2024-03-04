@@ -319,13 +319,13 @@ public class AirField {
 
 		for (Jet jet : reportJets) {
 			for (String line : htmlCardTemplate) {
-				String card = "" + line;
+				String card = "" + line + "\n";
 
 				card = card.replace("{{type}}", jet.getClass().getSimpleName());
 				card = card.replace("{{model}}", jet.getModel());
 				card = card.replace("{{speed}}", Double.toString(jet.getSpeed()));
 				card = card.replace("{{range}}", Integer.toString(jet.getRange()));
-				card = card.replace("{{price}}", Long.toString(jet.getPrice()));
+				card = card.replace("{{price}}", SafeParse.formatAmountInDollars(jet.getPrice()));
 				card = card.replace("{{getFlightTimeInHours}}", Double.toString(jet.getFlightTimeInHours()));
 				card = card.replace("{{getMacSpeedInMach}}", Double.toString(jet.getMacSpeedInMach()));
 				cards.add(card);
